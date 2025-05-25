@@ -16,7 +16,6 @@ interface AuthContextProps {
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   handleRedirectResult: () => Promise<void>;
-  simulateLogin: (userData: any) => void; // For demo purposes
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -25,7 +24,6 @@ export const AuthContext = createContext<AuthContextProps>({
   signInWithGoogle: async () => {},
   signOut: async () => {},
   handleRedirectResult: async () => {},
-  simulateLogin: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -33,16 +31,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { toast } = useToast();
 
-  // Make auth context accessible for demo mode
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      (window as any).authContext = {
-        simulateLogin: simulateLogin
-      };
-    }
-  }, []);
-
-  // Listen for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -51,39 +39,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     return () => unsubscribe();
   }, []);
-
-  // Function to simulate login for demo purposes
-  const simulateLogin = (userData: any) => {
-    const fakeUser = {
-      uid: "demo-user-123",
-      displayName: userData.displayName || "Demo User",
-      email: userData.email || "demo@example.com",
-      photoURL: userData.photoURL || null,
-      emailVerified: true,
-      // Add other required User properties
-      isAnonymous: false,
-      metadata: {},
-      providerData: [],
-      refreshToken: "",
-      tenantId: null,
-      delete: () => Promise.resolve(),
-      getIdToken: () => Promise.resolve("demo-token"),
-      getIdTokenResult: () => Promise.resolve({} as any),
-      reload: () => Promise.resolve(),
-      toJSON: () => ({})
-    } as unknown as User;
-
-    setCurrentUser(fakeUser);
-    
-    // Simulate sending the badge email
-    apiRequest("POST", "/api/send-badge", {
-      email: fakeUser.email,
-      name: fakeUser.displayName,
-      photoURL: fakeUser.photoURL
-    }).catch(error => {
-      console.error("Error sending badge in demo mode:", error);
-    });
-  };
 
   const signInWithGoogle = async () => {
     try {
@@ -124,17 +79,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOut = async () => {
     try {
-      // If current user is demo user, just clear state
-      if (currentUser?.uid === "demo-user-123") {
-        setCurrentUser(null);
-        toast({
-          title: "Signed Out",
-          description: "You have been signed out of demo mode.",
-        });
-        return;
-      }
-      
-      // Otherwise use Firebase signout
       await firebaseSignOut(auth);
       toast({
         title: "Signed Out",
@@ -150,7 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Keep this for compatibility
+  // Keep this for compatibility, but we're using popup now
   const handleRedirectResult = async () => {
     try {
       const result = await getRedirectResult(auth);
@@ -178,8 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isLoading,
     signInWithGoogle,
     signOut,
-    handleRedirectResult,
-    simulateLogin
+    handleRedirectResult
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
