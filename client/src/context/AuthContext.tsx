@@ -3,7 +3,7 @@ import {
   User, 
   onAuthStateChanged, 
   signOut as firebaseSignOut,
-  signInWithRedirect,
+  signInWithPopup,
   getRedirectResult
 } from "firebase/auth";
 import { auth, googleProvider } from "../lib/firebase";
@@ -42,14 +42,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signInWithGoogle = async () => {
     try {
-      console.log("Starting Google sign-in process");
+      console.log("Starting Google sign-in process with popup");
       console.log("Firebase config:", {
         apiKey: import.meta.env.VITE_FIREBASE_API_KEY ? "Set" : "Not set",
         projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID ? "Set" : "Not set",
         appId: import.meta.env.VITE_FIREBASE_APP_ID ? "Set" : "Not set"
       });
-      await signInWithRedirect(auth, googleProvider);
-      console.log("Redirect triggered");
+      
+      // Using popup method instead of redirect
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log("Popup sign-in successful");
+      
+      // If sign-in successful, send badge email
+      if (result.user) {
+        const { user } = result;
+        await apiRequest("POST", "/api/send-badge", {
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL
+        });
+        
+        toast({
+          title: "Welcome!",
+          description: "You've successfully signed in. Check your email for a special badge!",
+        });
+      }
     } catch (error) {
       console.error("Error signing in with Google:", error);
       toast({
@@ -77,6 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Keep this for compatibility, but we're using popup now
   const handleRedirectResult = async () => {
     try {
       const result = await getRedirectResult(auth);
