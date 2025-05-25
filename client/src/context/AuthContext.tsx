@@ -42,7 +42,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signInWithGoogle = async () => {
     try {
+      console.log("Starting Google sign-in process");
+      console.log("Firebase config:", {
+        apiKey: import.meta.env.VITE_FIREBASE_API_KEY ? "Set" : "Not set",
+        projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID ? "Set" : "Not set",
+        appId: import.meta.env.VITE_FIREBASE_APP_ID ? "Set" : "Not set"
+      });
       await signInWithRedirect(auth, googleProvider);
+      console.log("Redirect triggered");
     } catch (error) {
       console.error("Error signing in with Google:", error);
       toast({
