@@ -6,33 +6,33 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import { useEffect } from "react";
-import { useAuth } from "./hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 
 function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route component={NotFound} />
-    </Switch>
-  );
+	return (
+		<Switch>
+			<Route path="/" component={Home} />
+			<Route component={NotFound} />
+		</Switch>
+	);
 }
 
 function App() {
-  const { handleRedirectResult } = useAuth();
+	const { handleRedirectResult } = useAuth();
 
-  useEffect(() => {
-    // Handle firebase auth redirect result when page loads
-    handleRedirectResult();
-  }, [handleRedirectResult]);
-  
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
+	useEffect(() => {
+		// Handle firebase auth redirect result when page loads
+		handleRedirectResult();
+	}, [handleRedirectResult]);
+
+	return (
+		<QueryClientProvider client={queryClient}>
+			<TooltipProvider>
+				<Toaster />
+				<Router />
+			</TooltipProvider>
+		</QueryClientProvider>
+	);
 }
 
 export default App;
