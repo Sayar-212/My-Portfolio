@@ -2,10 +2,10 @@
 
 // Get the base API URL based on environment
 export const getApiBaseUrl = (): string => {
-  // For production (Vercel)
+  // For production (Netlify)
   if (import.meta.env.PROD) {
-    // Use relative URLs in production (Vercel)
-    return '/api';
+    // Use Netlify functions in production
+    return '/.netlify/functions';
   }
   
   // For development (local)
