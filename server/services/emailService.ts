@@ -1,9 +1,13 @@
 import nodemailer from "nodemailer";
 import { generateBadge } from "./badgeGenerator";
+import dotenv from "dotenv";
 
-// Email credentials - hardcoded for simplicity
-const EMAIL_USER = 'sayar.basu007@gmail.com';
-const EMAIL_PASSWORD = 'fxusbxyeoqzexvlt';
+// Load environment variables
+dotenv.config();
+
+// Email credentials from environment variables
+const EMAIL_USER = process.env.EMAIL_USER || 'sayar.basu007@gmail.com';
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD || 'fxusbxyeoqzexvlt';
 
 interface SendBadgeEmailParams {
   to: string;

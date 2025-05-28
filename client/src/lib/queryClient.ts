@@ -1,5 +1,4 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
-import { buildApiUrl } from "./apiConfig";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -13,9 +12,11 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  // Use the buildApiUrl function to ensure correct API URL in all environments
-  const apiUrl = url.startsWith('/api/') ? buildApiUrl(url.substring(5)) : url;
-  const res = await fetch(apiUrl, {
+  // Handle API URL for Vercel deployment
+  const apiUrl = import.meta.env.VITE_API_URL || '';
+  const fullUrl = url.startsWith('/api') ? `${apiUrl}${url}` : url;
+  
+  const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
@@ -32,10 +33,12 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    // Use the buildApiUrl function for API endpoints
+    // Handle API URL for Vercel deployment
+    const apiUrl = import.meta.env.VITE_API_URL || '';
     const url = queryKey[0] as string;
-    const apiUrl = url.startsWith('/api/') ? buildApiUrl(url.substring(5)) : url;
-    const res = await fetch(apiUrl, {
+    const fullUrl = url.startsWith('/api') ? `${apiUrl}${url}` : url;
+    
+    const res = await fetch(fullUrl, {
       credentials: "include",
     });
 

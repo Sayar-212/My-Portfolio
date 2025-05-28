@@ -1,7 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { buildApiUrl } from "@/lib/apiConfig";
 
 interface BadgeModalProps {
   isOpen: boolean;
@@ -54,7 +53,7 @@ export default function BadgeModal({ isOpen, onClose }: BadgeModalProps) {
       setIsDownloading(true);
       
       // Get the badge image from the server
-      const response = await fetch(buildApiUrl('generate-badge'), {
+      const response = await fetch('/api/generate-badge', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +100,7 @@ export default function BadgeModal({ isOpen, onClose }: BadgeModalProps) {
       setIsSharing(true);
       
       // First, get the badge image URL
-      const response = await fetch(buildApiUrl('generate-badge'), {
+      const response = await fetch('/api/generate-badge', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -201,7 +200,7 @@ export default function BadgeModal({ isOpen, onClose }: BadgeModalProps) {
               {/* Display the actual badge from the server */}
               <div className="rounded-lg overflow-hidden shadow-lg">
                 <img 
-                  src={`${buildApiUrl('generate-badge')}?name=${encodeURIComponent(currentUser?.displayName || 'Guest')}&email=${encodeURIComponent(currentUser?.email || '')}&photoURL=${encodeURIComponent(currentUser?.photoURL || '')}&t=${new Date().getTime()}`}
+                  src={`/api/generate-badge?name=${encodeURIComponent(currentUser?.displayName || 'Guest')}&email=${encodeURIComponent(currentUser?.email || '')}&photoURL=${encodeURIComponent(currentUser?.photoURL || '')}&t=${new Date().getTime()}`}
                   alt="Your Badge"
                   className="w-full h-auto"
                 />
