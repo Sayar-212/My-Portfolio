@@ -7,6 +7,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import AuthModal from "@/components/AuthModal";
 import BadgeModal from "@/components/BadgeModal";
+import AchievementBar from "@/components/AchievementBar";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -36,6 +37,7 @@ export default function Home() {
       <Header onOpenAuthModal={handleOpenAuthModal} onOpenBadgeModal={handleOpenBadgeModal} />
       <main>
         <Hero onOpenAuthModal={handleOpenAuthModal} />
+        <AchievementBar onOpenAuthModal={handleOpenAuthModal} />
         <About onOpenAuthModal={handleOpenAuthModal} />
         <Projects onOpenAuthModal={handleOpenAuthModal} />
         <Skills onOpenAuthModal={handleOpenAuthModal} />

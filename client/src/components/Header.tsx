@@ -9,11 +9,36 @@ interface HeaderProps {
 }
 
 export default function Header({ onOpenAuthModal, onOpenBadgeModal }: HeaderProps) {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme: contextToggleTheme } = useTheme();
   const { currentUser } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  
+  // Direct theme toggle function
+  const handleToggleTheme = () => {
+    const html = document.documentElement;
+    
+    // Check current state and toggle
+    const isDark = html.classList.contains('dark');
+    
+    if (isDark) {
+      html.classList.remove('dark');
+    } else {
+      html.classList.add('dark');
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    
+    // Update context
+    contextToggleTheme();
+    
+    // Force a repaint to ensure all styles update
+    document.body.style.display = 'none';
+    document.body.offsetHeight; // Trigger a reflow
+    document.body.style.display = '';
+  };
 
   // Handle scroll effect
   useEffect(() => {
@@ -59,12 +84,15 @@ export default function Header({ onOpenAuthModal, onOpenBadgeModal }: HeaderProp
             
             <div className="flex items-center space-x-4">
               <button 
-                onClick={toggleTheme}
+                onClick={handleToggleTheme}
                 className="h-9 w-9 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700"
                 aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               >
-                <i className="ri-sun-line dark:hidden"></i>
-                <i className="ri-moon-line hidden dark:inline"></i>
+                {theme === 'dark' ? (
+                  <i className="ri-sun-line"></i>
+                ) : (
+                  <i className="ri-moon-line"></i>
+                )}
               </button>
               
               {!currentUser ? (
@@ -147,12 +175,15 @@ export default function Header({ onOpenAuthModal, onOpenBadgeModal }: HeaderProp
               </button>
             )}
             <button 
-              onClick={toggleTheme}
+              onClick={handleToggleTheme}
               className="h-9 w-9 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700"
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
-              <i className="ri-sun-line dark:hidden"></i>
-              <i className="ri-moon-line hidden dark:inline"></i>
+              {theme === 'dark' ? (
+                <i className="ri-sun-line"></i>
+              ) : (
+                <i className="ri-moon-line"></i>
+              )}
             </button>
           </div>
         </div>

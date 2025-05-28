@@ -1,4 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
+import { Link } from "wouter";
 
 interface ProjectsProps {
   onOpenAuthModal: () => void;
@@ -16,30 +17,42 @@ export default function Projects({ onOpenAuthModal }: ProjectsProps) {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Project 1 (Preview) */}
-          <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl">
-            <div className="h-48 bg-gradient-to-r from-primary-500/30 to-secondary-500/30 flex items-center justify-center">
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-full">
-                <i className="ri-brain-line text-4xl text-primary-600 dark:text-primary-400"></i>
+          {/* AltairX - AI CodeBase Editor */}
+          <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl border-2 border-green-500 dark:border-green-400 relative">
+            <div className="absolute top-0 right-0 bg-green-600 text-white px-3 py-1 text-xs font-bold rounded-bl-lg z-10">
+              Founder
+            </div>
+            <div className="absolute top-3 left-3 bg-amber-600 text-white px-2 py-1 text-xs font-bold rounded z-10 flex items-center">
+              <i className="ri-trophy-line mr-1"></i>
+              <span>10th @ AIgnite</span>
+            </div>
+            <div className="h-48 bg-gradient-to-r from-green-500/40 to-teal-500/40 flex items-center justify-center">
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-full flex items-center justify-center relative">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center">
+                  <div className="relative">
+                    <i className="ri-code-box-line text-3xl text-white"></i>
+                    <i className="ri-ai-generate text-xl text-white absolute -top-1 -right-3"></i>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-full text-xs font-medium">LLM Application</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">2023</span>
+                <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-bold">AltairX Company</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">2025</span>
               </div>
-              <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Conversational AI Platform</h3>
+              <h3 className="text-xl font-bold mb-2 text-green-600 dark:text-green-400">AltairX - AI CodeBase Editor</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                An advanced chatbot platform leveraging large language models with custom knowledge base integration.
+                <span className="font-semibold">Second project under my AltairX company</span> - A revolutionary AI-powered code editor that secured 10th position in the prestigious AIgnite competition.
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">GPT-4</span>
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">LangChain</span>
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">Python</span>
+                <span className="px-2 py-1 bg-green-50 dark:bg-green-900/20 rounded text-green-600 dark:text-green-400 text-xs font-medium">Founder</span>
+                <span className="px-2 py-1 bg-green-50 dark:bg-green-900/20 rounded text-green-600 dark:text-green-400 text-xs font-medium">AI</span>
+                <span className="px-2 py-1 bg-green-50 dark:bg-green-900/20 rounded text-green-600 dark:text-green-400 text-xs font-medium">Competition</span>
               </div>
               <div className="flex justify-between items-center">
-                <a href="#" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 text-sm font-medium">
-                  Project Overview
+                <a href="https://github.com/Sayar-212/AltairX_AIgnite" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 text-sm font-medium">
+                  View on GitHub
                 </a>
                 {!currentUser && (
                   <div className="relative group">
@@ -55,30 +68,38 @@ export default function Projects({ onOpenAuthModal }: ProjectsProps) {
             </div>
           </div>
           
-          {/* Project 2 (Preview) */}
-          <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl">
-            <div className="h-48 bg-gradient-to-r from-secondary-500/30 to-green-500/30 flex items-center justify-center">
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-full">
-                <i className="ri-microscope-line text-4xl text-secondary-600 dark:text-secondary-400"></i>
+          {/* AltairX - Career Guidance Bot */}
+          <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl border-2 border-green-500 dark:border-green-400 relative">
+            <div className="absolute top-0 right-0 bg-green-600 text-white px-3 py-1 text-xs font-bold rounded-bl-lg z-10">
+              Owner
+            </div>
+            <div className="h-48 bg-gradient-to-r from-green-500/40 to-teal-500/40 flex items-center justify-center">
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-full flex items-center justify-center relative">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center">
+                  <div className="relative">
+                    <i className="ri-robot-line text-3xl text-white"></i>
+                    <i className="ri-briefcase-4-line text-xl text-white absolute -bottom-1 -right-3"></i>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <span className="px-3 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-700 dark:text-secondary-400 rounded-full text-xs font-medium">Computer Vision</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">2022</span>
+                <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-bold">Umbrella Project</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">2024</span>
               </div>
-              <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Medical Image Analysis</h3>
+              <h3 className="text-xl font-bold mb-2 text-green-600 dark:text-green-400">Altair - Career Guidance Bot</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                AI-powered system for detecting anomalies in medical imaging with high precision and recall.
+                <span className="font-semibold">My umbrella project</span> featuring an AI-powered career guidance system. Part of the broader AltairX ecosystem I developed.
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">PyTorch</span>
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">CNNs</span>
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">Python</span>
+                <span className="px-2 py-1 bg-green-50 dark:bg-green-900/20 rounded text-green-600 dark:text-green-400 text-xs font-medium">Owner</span>
+                <span className="px-2 py-1 bg-green-50 dark:bg-green-900/20 rounded text-green-600 dark:text-green-400 text-xs font-medium">AI</span>
+                <span className="px-2 py-1 bg-green-50 dark:bg-green-900/20 rounded text-green-600 dark:text-green-400 text-xs font-medium">Chatbot</span>
               </div>
               <div className="flex justify-between items-center">
-                <a href="#" className="text-secondary-600 hover:text-secondary-700 dark:text-secondary-400 dark:hover:text-secondary-300 text-sm font-medium">
-                  Project Overview
+                <a href="https://github.com/Sayar-212/Altair" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 text-sm font-medium">
+                  View on GitHub
                 </a>
                 {!currentUser && (
                   <div className="relative group">
@@ -94,30 +115,35 @@ export default function Projects({ onOpenAuthModal }: ProjectsProps) {
             </div>
           </div>
           
-          {/* Project 3 (Preview) */}
-          <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl">
-            <div className="h-48 bg-gradient-to-r from-purple-500/30 to-primary-500/30 flex items-center justify-center">
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-full">
-                <i className="ri-line-chart-line text-4xl text-purple-600 dark:text-purple-400"></i>
+          {/* RentPe - My Own Startup */}
+          <div className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl border-2 border-blue-500 dark:border-blue-400 relative">
+            <div className="absolute top-0 right-0 bg-blue-600 text-white px-3 py-1 text-xs font-bold rounded-bl-lg z-10">
+              Founder
+            </div>
+            <div className="h-48 bg-gradient-to-r from-blue-500/50 to-indigo-500/50 flex items-center justify-center">
+              <div className="bg-white/20 backdrop-blur-sm p-8 rounded-full flex items-center justify-center relative">
+                <div className="w-16 h-16 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
+                  <i className="ri-home-4-line text-3xl text-white"></i>
+                </div>
               </div>
             </div>
             <div className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-xs font-medium">Reinforcement Learning</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">2022</span>
+                <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-xs font-bold">My Startup</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">2024</span>
               </div>
-              <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Autonomous Trading System</h3>
+              <h3 className="text-xl font-bold mb-2 text-blue-600 dark:text-blue-400">RentPe</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                RL-based algorithmic trading system for financial markets with risk management capabilities.
+                <span className="font-semibold">My own startup venture</span> - An innovative rental marketplace platform I conceptualized and pitched at Presidency University, receiving special recognition.
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">TensorFlow</span>
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">RL</span>
-                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">Python</span>
+                <span className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 rounded text-blue-600 dark:text-blue-400 text-xs font-medium">Founder</span>
+                <span className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 rounded text-blue-600 dark:text-blue-400 text-xs font-medium">Startup</span>
+                <span className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 rounded text-blue-600 dark:text-blue-400 text-xs font-medium">Marketplace</span>
               </div>
               <div className="flex justify-between items-center">
-                <a href="#" className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 text-sm font-medium">
-                  Project Overview
+                <a href="https://rent-pe-sigma.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
+                  View Prototype
                 </a>
                 {!currentUser && (
                   <div className="relative group">
@@ -148,10 +174,10 @@ export default function Projects({ onOpenAuthModal }: ProjectsProps) {
         
         {currentUser && (
           <div className="text-center mt-12">
-            <a href="#" className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow inline-flex items-center">
+            <Link href="/projects" className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow inline-flex items-center">
               <span>View all projects</span>
               <i className="ri-arrow-right-line ml-2"></i>
-            </a>
+            </Link>
           </div>
         )}
       </div>

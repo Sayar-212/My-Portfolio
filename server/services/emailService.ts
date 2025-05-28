@@ -1,27 +1,55 @@
 import nodemailer from "nodemailer";
+import { generateBadge } from "./badgeGenerator";
+
+// Email credentials - hardcoded for simplicity
+const EMAIL_USER = 'sayar.basu007@gmail.com';
+const EMAIL_PASSWORD = 'fxusbxyeoqzexvlt';
 
 interface SendBadgeEmailParams {
   to: string;
   name: string;
-  badgeBuffer: Buffer;
+  email: string;
+  photoURL?: string;
 }
 
-export async function sendBadgeEmail({ to, name, badgeBuffer }: SendBadgeEmailParams) {
-  try {
-    // Create reusable transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST || "smtp.example.com",
-      port: parseInt(process.env.EMAIL_PORT || "587"),
-      secure: process.env.EMAIL_SECURE === "true",
-      auth: {
-        user: process.env.EMAIL_USER || "user@example.com",
-        pass: process.env.EMAIL_PASS || "password",
-      },
-    });
+// Create a Gmail transporter
+function createGmailTransporter() {
+  console.log('Creating Gmail transporter with:', EMAIL_USER);
+  
+  // Create transporter object with Gmail SMTP
+  return nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASSWORD
+    },
+    tls: {
+      // Do not fail on invalid certs
+      rejectUnauthorized: false
+    }
+  });
+}
 
-    // Send mail with defined transport object
-    const info = await transporter.sendMail({
-      from: `"Sayar Basu" <${process.env.EMAIL_FROM || "sayar.basu@example.com"}>`,
+export async function sendBadgeEmail(to: string, name: string, email: string, photoURL?: string | null) {
+  try {
+    console.log('Starting email send process to:', to);
+    
+    // Generate the badge
+    const badgeBuffer = await generateBadge({ name, email, photoURL });
+    console.log('Badge generated successfully');
+    
+    // Create Gmail transporter
+    const transporter = createGmailTransporter();
+    console.log('Gmail transporter created successfully');
+
+    // Create the filename for the badge
+    const badgeFilename = `${name.toLowerCase().replace(/\s+/g, '_')}_visitor_sayar_basu.png`;
+    
+    // Prepare email data
+    const mailOptions = {
+      from: `"Sayar Basu" <${EMAIL_USER}>`,
       to,
       subject: "Thank you for visiting my profile!",
       html: `
@@ -45,7 +73,14 @@ export async function sendBadgeEmail({ to, name, badgeBuffer }: SendBadgeEmailPa
             
             <div style="text-align: center; margin: 30px 0;">
               <p style="font-size: 18px; font-weight: bold; color: #334155;">Your Custom Badge</p>
-              <img src="cid:badge" alt="Your Custom Badge" style="max-width: 300px; border-radius: 10px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);" />
+              <div style="margin-bottom: 20px;">
+                <img src="cid:badge" alt="Your Custom Badge" style="max-width: 300px; border-radius: 10px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);" />
+              </div>
+              <div style="margin-top: 15px;">
+                <a href="cid:badge" download="${badgeFilename}" style="display: inline-block; background-color: #4f46e5; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 500; transition: background-color 0.2s;">
+                  Download Badge
+                </a>
+              </div>
             </div>
             
             <p style="font-size: 16px; line-height: 1.5; color: #334155;">
@@ -66,17 +101,34 @@ export async function sendBadgeEmail({ to, name, badgeBuffer }: SendBadgeEmailPa
       `,
       attachments: [
         {
-          filename: 'badge.png',
+          // Use the same filename variable for consistency
+          filename: badgeFilename,
           content: badgeBuffer,
-          cid: 'badge' // Same cid value as in the html img src
+          cid: 'badge',
+          contentType: 'image/png'
         }
       ]
-    });
-
+    };
+    
+    // Send the email
+    console.log('Sending email...');
+    const info = await transporter.sendMail(mailOptions);
     console.log("Badge email sent:", info.messageId);
+    
+    // Log success message
+    console.log('Email sent successfully from Gmail account');
+
+    
     return info;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error sending badge email:", error);
+    // Log more detailed error information
+    if (error.response) {
+      console.error('SMTP Response Error:', error.response);
+    }
+    if (error.code) {
+      console.error('Error Code:', error.code);
+    }
     throw error;
   }
 }

@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { auth, googleProvider } from "../lib/firebase";
 import { apiRequest } from "../lib/queryClient";
+import { buildApiUrl } from "../lib/apiConfig";
 import { useToast } from "@/hooks/use-toast";
 
 interface AuthContextProps {

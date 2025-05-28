@@ -125,7 +125,7 @@ export default function Contact({ onOpenAuthModal }: ContactProps) {
                         <i className="ri-map-pin-line text-xl mt-1"></i>
                         <div>
                           <h4 className="font-medium">Location</h4>
-                          <p className="text-white/80">San Francisco, California</p>
+                          <p className="text-white/80">Kolkata, India</p>
                         </div>
                       </div>
                       
@@ -133,8 +133,8 @@ export default function Contact({ onOpenAuthModal }: ContactProps) {
                         <i className="ri-mail-line text-xl mt-1"></i>
                         <div>
                           <h4 className="font-medium">Email</h4>
-                          <a href="mailto:sayar.basu@example.com" className="text-white/80 hover:text-white transition-colors">
-                            sayar.basu@example.com
+                          <a href="mailto:sayar.basu.cse26@heritageit.edu.in" className="text-white/80 hover:text-white transition-colors">
+                            sayar.basu.cse26@heritageit.edu.in
                           </a>
                         </div>
                       </div>
@@ -143,8 +143,8 @@ export default function Contact({ onOpenAuthModal }: ContactProps) {
                         <i className="ri-phone-line text-xl mt-1"></i>
                         <div>
                           <h4 className="font-medium">Phone</h4>
-                          <a href="tel:+14155551234" className="text-white/80 hover:text-white transition-colors">
-                            +1 (415) 555-1234
+                          <a href="tel:+917980384252" className="text-white/80 hover:text-white transition-colors">
+                            +91 7980384252
                           </a>
                         </div>
                       </div>
@@ -154,14 +154,17 @@ export default function Contact({ onOpenAuthModal }: ContactProps) {
                         <div>
                           <h4 className="font-medium">Profiles</h4>
                           <div className="flex space-x-3 mt-2">
-                            <a href="#" className="flex items-center justify-center h-8 w-8 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors">
+                            <a href="https://github.com/Sayar-212" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center h-8 w-8 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors">
                               <i className="ri-github-fill"></i>
                             </a>
-                            <a href="#" className="flex items-center justify-center h-8 w-8 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors">
+                            <a href="https://www.linkedin.com/in/sayar-basu-21027b261/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center h-8 w-8 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors">
                               <i className="ri-linkedin-fill"></i>
                             </a>
-                            <a href="#" className="flex items-center justify-center h-8 w-8 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors">
+                            <a href="https://x.com/BasuSayar" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center h-8 w-8 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors">
                               <i className="ri-twitter-fill"></i>
+                            </a>
+                            <a href="mailto:sayar.basu.cse26@heritageit.edu.in" className="flex items-center justify-center h-8 w-8 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors">
+                              <i className="ri-mail-fill"></i>
                             </a>
                           </div>
                         </div>

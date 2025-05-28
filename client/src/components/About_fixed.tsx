@@ -16,9 +16,9 @@ export default function About({ onOpenAuthModal }: AboutProps) {
             <p className="text-gray-600 dark:text-gray-400">Get to know more about my background and expertise</p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             {/* Left Content Column */}
-            <div className="col-span-1">
+            <div className="col-span-1 lg:col-span-2">
               {/* Bio Card */}
               {!currentUser && (
                 <div className="space-y-4">
@@ -59,74 +59,98 @@ export default function About({ onOpenAuthModal }: AboutProps) {
               )}
             </div>
             
-            {/* Center Column - Tech Rotating Box */}
-            <div className="col-span-1 flex justify-center items-center">
+            {/* Center Profile Box Column */}
+            <div className="col-span-1 flex justify-center">
+              {/* Preview version for non-authenticated users */}
               {!currentUser && (
-                <div className="relative overflow-hidden rounded-full shadow-lg h-64 w-64 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                <div className="relative overflow-hidden rounded-lg shadow-lg">
+                  <div className="w-full h-96 md:h-auto aspect-[3/4] bg-gray-300 filter blur-sm"></div>
                   <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center p-4">
                     <i className="ri-lock-line text-white text-3xl mb-2"></i>
-                    <p className="text-white text-center font-medium">Sign in to view</p>
+                    <p className="text-white text-center font-medium">Sign in to view full profile details</p>
                   </div>
                 </div>
               )}
               
+              {/* Full version for authenticated users */}
               {currentUser && (
-                <div className="relative h-64 w-64 flex items-center justify-center">
-                  {/* Animated rotating circles */}
-                  <div className="absolute inset-0 rounded-full border-2 border-dashed border-blue-500/50 animate-spin-slow"></div>
-                  <div className="absolute inset-4 rounded-full border-2 border-dashed border-green-500/50 animate-spin-slow-reverse"></div>
-                  <div className="absolute inset-8 rounded-full border-2 border-dashed border-purple-500/50 animate-spin-slow"></div>
-                  <div className="absolute inset-12 rounded-full border-2 border-dashed border-cyan-500/50 animate-spin-slow-reverse"></div>
-                  
-                  {/* Center content */}
-                  <div className="relative z-10 h-32 w-32 rounded-full bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-xl">
-                    <div className="absolute inset-1 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center overflow-hidden">
-                      {/* Matrix-style code rain effect */}
-                      <div className="absolute inset-0 opacity-20">
-                        <div className="code-rain"></div>
+                <div className="relative overflow-hidden rounded-lg shadow-lg">
+                  <div className="w-full h-96 md:h-auto aspect-[3/4] bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 relative">
+                    {/* Matrix-style code rain effect */}
+                    <div className="absolute inset-0 opacity-20">
+                      <div className="code-rain"></div>
+                    </div>
+                    
+                    {/* Tech circuit pattern overlay */}
+                    <div className="absolute inset-0 bg-circuit-pattern opacity-10"></div>
+                    
+                    {/* Profile content */}
+                    <div className="absolute inset-0 flex flex-col justify-between p-6">
+                      {/* Top section with tech metrics */}
+                      <div className="space-y-3">
+                        <div className="bg-black/40 backdrop-blur-sm rounded-lg p-3 border border-blue-500/30">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-mono text-blue-300">// AI Experience</span>
+                            <span className="text-xs font-mono text-green-300">1.5+ years</span>
+                          </div>
+                          <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                            <div className="h-full bg-gradient-to-r from-blue-500 to-green-500 w-[85%]"></div>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-black/40 backdrop-blur-sm rounded-lg p-3 border border-purple-500/30">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-mono text-purple-300">// LLM Expertise</span>
+                            <span className="text-xs font-mono text-green-300">Advanced</span>
+                          </div>
+                          <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                            <div className="h-full bg-gradient-to-r from-purple-500 to-green-500 w-[90%]"></div>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-black/40 backdrop-blur-sm rounded-lg p-3 border border-cyan-500/30">
+                          <div className="text-xs font-mono text-cyan-300 mb-2">// Tech Stack</div>
+                          <div className="flex flex-wrap gap-2">
+                            <span className="px-2 py-1 bg-black/50 rounded text-xs font-mono text-cyan-400 border border-cyan-500/30">Python</span>
+                            <span className="px-2 py-1 bg-black/50 rounded text-xs font-mono text-green-400 border border-green-500/30">TensorFlow</span>
+                            <span className="px-2 py-1 bg-black/50 rounded text-xs font-mono text-purple-400 border border-purple-500/30">PyTorch</span>
+                          </div>
+                        </div>
                       </div>
                       
-                      {/* Tech circuit pattern overlay */}
-                      <div className="absolute inset-0 bg-circuit-pattern opacity-10"></div>
+                      {/* Middle section with animated elements */}
+                      <div className="flex justify-center items-center py-4">
+                        <div className="relative h-16 w-16">
+                          <div className="absolute inset-0 rounded-full border-2 border-dashed border-blue-500/50 animate-spin-slow"></div>
+                          <div className="absolute inset-2 rounded-full border-2 border-dashed border-green-500/50 animate-spin-slow-reverse"></div>
+                          <div className="absolute inset-4 rounded-full border-2 border-dashed border-purple-500/50 animate-spin-slow"></div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-white text-xs font-mono">AI</span>
+                          </div>
+                        </div>
+                      </div>
                       
-                      <div className="relative z-10 text-white text-2xl font-bold">AI</div>
+                      {/* Status indicator */}
+                      <div className="flex items-center space-x-2 bg-black/30 backdrop-blur-sm px-3 py-2 rounded-lg border border-green-400/30 shadow-lg">
+                        <div className="relative">
+                          <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse"></div>
+                          <div className="absolute -inset-1 bg-green-500/30 rounded-full animate-ping opacity-75"></div>
+                        </div>
+                        <span className="text-sm font-medium flex items-center">
+                          <code className="mr-1 font-mono text-green-300">status:</code> 
+                          <span className="text-green-400 font-semibold">Available for projects</span>
+                          <i className="ri-code-line ml-2 text-green-300"></i>
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  
-                  {/* Tech metrics floating around */}
-                  <div className="absolute top-0 -translate-y-1/2 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full border border-blue-500/30 shadow-lg">
-                    <span className="text-xs font-mono text-blue-300">1.5+ years</span>
-                  </div>
-                  
-                  <div className="absolute right-0 translate-x-1/2 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full border border-purple-500/30 shadow-lg">
-                    <span className="text-xs font-mono text-purple-300">LLMs</span>
-                  </div>
-                  
-                  <div className="absolute bottom-0 translate-y-1/2 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full border border-green-500/30 shadow-lg">
-                    <span className="text-xs font-mono text-green-300">GenAI</span>
-                  </div>
-                  
-                  <div className="absolute left-0 -translate-x-1/2 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full border border-cyan-500/30 shadow-lg">
-                    <span className="text-xs font-mono text-cyan-300">Python</span>
-                  </div>
-                  
-                  {/* Status indicator */}
-                  <div className="absolute -bottom-8 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-lg border border-green-400/30 shadow-lg flex items-center space-x-2">
-                    <div className="relative">
-                      <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
-                      <div className="absolute -inset-1 bg-green-500/30 rounded-full animate-ping opacity-75"></div>
-                    </div>
-                    <span className="text-xs font-medium">
-                      <span className="text-green-400 font-semibold">Available for projects</span>
-                    </span>
                   </div>
                 </div>
               )}
             </div>
-            
+
             {/* Right Content Column */}
-            <div className="col-span-1">
-              {/* Current Focus Areas Card */}
+            <div className="col-span-1 lg:col-span-2">
+              {/* Current Focus Areas Card for non-authenticated users */}
               {!currentUser && (
                 <div className="space-y-4">
                   <div className="flex flex-wrap gap-2 mt-4">
@@ -184,6 +208,15 @@ export default function About({ onOpenAuthModal }: AboutProps) {
                           <i className="ri-shield-check-line text-amber-600 dark:text-amber-400"></i>
                         </div>
                         <p className="text-gray-700 dark:text-gray-300">Developing ethical AI standards and explainable AI solutions</p>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border-l-4 border-cyan-500 shadow-sm hover:shadow-md transition-all">
+                      <div className="flex items-start">
+                        <div className="bg-cyan-100 dark:bg-cyan-900/30 p-2 rounded-lg mr-3">
+                          <i className="ri-device-line text-cyan-600 dark:text-cyan-400"></i>
+                        </div>
+                        <p className="text-gray-700 dark:text-gray-300">Edge AI and Mobile GPU optimization for GenAI models</p>
                       </div>
                     </div>
                   </div>

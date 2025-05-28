@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
@@ -20,10 +20,56 @@ const contactFormSchema = z.object({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Generate badge image - supports both POST and GET
+  const handleGenerateBadge = async (req: Request, res: Response) => {
+    try {
+      // Get data from either query params (GET) or body (POST)
+      const data = req.method === 'GET' 
+        ? {
+            name: req.query.name,
+            email: req.query.email,
+            photoURL: req.query.photoURL
+          }
+        : req.body;
+      
+      // Validate data
+      const validatedData = sendBadgeSchema.parse(data);
+      
+      // Generate badge image
+      const badgeBuffer = await generateBadge({
+        name: validatedData.name || "Guest",
+        email: validatedData.email,
+        photoURL: validatedData.photoURL || null
+      });
+      
+      // Set appropriate headers
+      res.setHeader('Content-Type', 'image/png');
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      
+      // For POST requests or when download=true, set as attachment
+      if (req.method === 'POST' || req.query.download === 'true') {
+        const filename = `${(validatedData.name || 'guest').toLowerCase().replace(/\s+/g, '_')}_visitor_sayar_basu.png`;
+        res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+      }
+      
+      res.send(badgeBuffer);
+    } catch (error) {
+      console.error("Error generating badge:", error);
+      res.status(500).json({ success: false, message: "Failed to generate badge" });
+    }
+  };
+  
+  // Register both POST and GET handlers for badge generation
+  app.post("/api/generate-badge", handleGenerateBadge);
+  app.get("/api/generate-badge", handleGenerateBadge);
+
   // Send badge email on user sign-in
   app.post("/api/send-badge", async (req, res) => {
     try {
       const data = sendBadgeSchema.parse(req.body);
+      console.log("Received badge email request for:", data.email);
       
       // Generate badge image
       const badgeBuffer = await generateBadge({
@@ -31,13 +77,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: data.email,
         photoURL: data.photoURL || null
       });
+      console.log("Badge generated successfully");
       
       // Send email with badge
-      await sendBadgeEmail({
-        to: data.email,
-        name: data.name || "Guest",
-        badgeBuffer
-      });
+      await sendBadgeEmail(
+        data.email,
+        data.name || "Guest",
+        data.email,
+        data.photoURL
+      );
+      console.log("Badge email sent successfully to:", data.email);
       
       res.status(200).json({ success: true, message: "Badge email sent successfully" });
     } catch (error) {

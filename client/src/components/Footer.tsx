@@ -31,16 +31,16 @@ export default function Footer() {
           </p>
           
           <div className="flex space-x-4">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            <a href="https://github.com/Sayar-212" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
               <i className="ri-github-fill text-xl"></i>
             </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            <a href="https://www.linkedin.com/in/sayar-basu-21027b261/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
               <i className="ri-linkedin-fill text-xl"></i>
             </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            <a href="https://x.com/BasuSayar" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
               <i className="ri-twitter-fill text-xl"></i>
             </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            <a href="mailto:sayar.basu.cse26@heritageit.edu.in" className="text-gray-400 hover:text-white transition-colors">
               <i className="ri-mail-fill text-xl"></i>
             </a>
           </div>

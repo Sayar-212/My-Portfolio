@@ -11,13 +11,13 @@ export default function Skills({ onOpenAuthModal }: SkillsProps) {
     <section id="skills" className="py-16 md:py-24 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">AI/ML Skills & Expertise</h2>
-          <p className="text-gray-600 dark:text-gray-400">My technical capabilities in artificial intelligence and machine learning</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Skills & Expertise</h2>
+          <p className="text-gray-600 dark:text-gray-400">My technical capabilities across AI, software development, and entrepreneurship</p>
         </div>
         
         <div className="max-w-4xl mx-auto">
-          {/* Preview Version (Blurred) */}
-          {!currentUser && (
+          {!currentUser ? (
+            /* Preview Version (Blurred) for non-authenticated users */
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
               <div className="absolute inset-0 bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-10 rounded-xl">
                 <div className="text-center p-6 max-w-md">
@@ -74,6 +74,24 @@ export default function Skills({ onOpenAuthModal }: SkillsProps) {
                         <div className="bg-primary-600 h-2 rounded-full" style={{ width: "90%" }}></div>
                       </div>
                     </div>
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-gray-700 dark:text-gray-300">Deep Learning</span>
+                        <span className="text-gray-500 dark:text-gray-400">85%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div className="bg-primary-600 h-2 rounded-full" style={{ width: "85%" }}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-gray-700 dark:text-gray-300">Generative AI</span>
+                        <span className="text-gray-500 dark:text-gray-400">95%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div className="bg-primary-600 h-2 rounded-full" style={{ width: "95%" }}></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -119,14 +137,30 @@ export default function Skills({ onOpenAuthModal }: SkillsProps) {
                         <div className="bg-secondary-500 h-2 rounded-full" style={{ width: "80%" }}></div>
                       </div>
                     </div>
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-gray-700 dark:text-gray-300">Vector Databases</span>
+                        <span className="text-gray-500 dark:text-gray-400">85%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div className="bg-secondary-500 h-2 rounded-full" style={{ width: "85%" }}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-gray-700 dark:text-gray-300">Python Data Stack</span>
+                        <span className="text-gray-500 dark:text-gray-400">90%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div className="bg-secondary-500 h-2 rounded-full" style={{ width: "90%" }}></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          )}
-          
-          {/* Full Version */}
-          {currentUser && (
+          ) : (
+            /* Full Version (Unblurred) for authenticated users */
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Left Column */}
               <div>
@@ -171,7 +205,7 @@ export default function Skills({ onOpenAuthModal }: SkillsProps) {
                     </div>
                     <div>
                       <div className="flex justify-between mb-1">
-                        <span className="text-gray-700 dark:text-gray-300">Multimodal AI</span>
+                        <span className="text-gray-700 dark:text-gray-300">Deep Learning</span>
                         <span className="text-gray-500 dark:text-gray-400">85%</span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -180,7 +214,7 @@ export default function Skills({ onOpenAuthModal }: SkillsProps) {
                     </div>
                     <div>
                       <div className="flex justify-between mb-1">
-                        <span className="text-gray-700 dark:text-gray-300">Prompt Engineering</span>
+                        <span className="text-gray-700 dark:text-gray-300">Generative AI</span>
                         <span className="text-gray-500 dark:text-gray-400">95%</span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">

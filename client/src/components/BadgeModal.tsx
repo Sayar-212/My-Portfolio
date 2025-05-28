@@ -1,6 +1,7 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { buildApiUrl } from "@/lib/apiConfig";
 
 interface BadgeModalProps {
   isOpen: boolean;
@@ -16,18 +17,75 @@ export default function BadgeModal({ isOpen, onClose }: BadgeModalProps) {
   // Generate a random badge ID
   const badgeId = `AIML${Math.floor(1000 + Math.random() * 9000)}`;
 
+  // Share platform configurations
+  const sharePlatforms = [
+    {
+      name: 'LinkedIn',
+      icon: 'ri-linkedin-box-fill',
+      color: 'bg-blue-600',
+      hoverColor: 'hover:bg-blue-700',
+      textColor: 'text-white'
+    },
+    {
+      name: 'Twitter',
+      icon: 'ri-twitter-fill',
+      color: 'bg-blue-400',
+      hoverColor: 'hover:bg-blue-500',
+      textColor: 'text-white'
+    },
+    {
+      name: 'Facebook',
+      icon: 'ri-facebook-fill',
+      color: 'bg-blue-700',
+      hoverColor: 'hover:bg-blue-800',
+      textColor: 'text-white'
+    },
+    {
+      name: 'WhatsApp',
+      icon: 'ri-whatsapp-fill',
+      color: 'bg-green-500',
+      hoverColor: 'hover:bg-green-600',
+      textColor: 'text-white'
+    }
+  ];
+
   const handleDownload = async () => {
     try {
       setIsDownloading(true);
       
-      // Simulate download delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      // Get the badge image from the server
+      const response = await fetch(buildApiUrl('generate-badge'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: currentUser?.displayName || 'Guest',
+          email: currentUser?.email || '',
+          photoURL: "https://blogger.googleusercontent.com/img/a/AVvXsEgLhFyRrLh3rCyveZufQg1-eC4bjWwK8cCxDjlCVgY7gEXlx---WSZQwwFhw1ZO5dHwrLaHb_JZbhoUPNZfXOvT2SvDIpQtObNh7QAEjcE-DCatl9GqdkCC16I1DiiabWJcoOBxjBtZ_XDGFVYL_QBi1ilHAnVwUrfZ-_WePb983J08GgpDIur51n-52wg=w306-h345"
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate badge');
+      }
+
+      const badgeBlob = await response.blob();
+      const url = window.URL.createObjectURL(badgeBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'sayar-basu-badge.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
       toast({
         title: "Badge Downloaded",
         description: "Your badge has been downloaded successfully!",
       });
     } catch (error) {
+      console.error('Error downloading badge:', error);
       toast({
         title: "Download Failed",
         description: "Failed to download your badge. Please try again.",
@@ -38,18 +96,69 @@ export default function BadgeModal({ isOpen, onClose }: BadgeModalProps) {
     }
   };
 
-  const handleShare = async () => {
+  const handleShare = async (platform: string) => {
     try {
       setIsSharing(true);
       
-      // Simulate sharing delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // First, get the badge image URL
+      const response = await fetch(buildApiUrl('generate-badge'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: currentUser?.displayName || 'Guest',
+          email: currentUser?.email || '',
+          photoURL: "https://blogger.googleusercontent.com/img/a/AVvXsEgLhFyRrLh3rCyveZufQg1-eC4bjWwK8cCxDjlCVgY7gEXlx---WSZQwwFhw1ZO5dHwrLaHb_JZbhoUPNZfXOvT2SvDIpQtObNh7QAEjcE-DCatl9GqdkCC16I1DiiabWJcoOBxjBtZ_XDGFVYL_QBi1ilHAnVwUrfZ-_WePb983J08GgpDIur51n-52wg=w306-h345"
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate badge');
+      }
+      
+      // Create a blob URL for the image
+      const badgeBlob = await response.blob();
+      const blobUrl = URL.createObjectURL(badgeBlob);
+      
+      // Create share text
+      const shareText = `Check out my AI/ML Engineer badge from Sayar Basu's portfolio!`;
+      const shareUrl = window.location.origin;
+      
+      // Create appropriate share URL based on platform
+      let shareLink = '';
+      
+      switch(platform.toLowerCase()) {
+        case 'linkedin':
+          shareLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}&summary=${encodeURIComponent(shareText)}`;
+          break;
+        case 'twitter':
+          shareLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+          break;
+        case 'facebook':
+          shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`;
+          break;
+        case 'whatsapp':
+          shareLink = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+          break;
+        default:
+          shareLink = '';
+      }
+      
+      // Open share link in new window
+      if (shareLink) {
+        window.open(shareLink, '_blank');
+      }
+      
+      // Revoke the blob URL to free memory
+      URL.revokeObjectURL(blobUrl);
       
       toast({
         title: "Badge Shared",
-        description: "Your badge has been shared successfully!",
+        description: `Your badge has been shared on ${platform}!`,
       });
     } catch (error) {
+      console.error('Error sharing badge:', error);
       toast({
         title: "Sharing Failed",
         description: "Failed to share your badge. Please try again.",
@@ -63,62 +172,39 @@ export default function BadgeModal({ isOpen, onClose }: BadgeModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center ${isOpen ? 'visible' : 'invisible'}`}
+    >
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
-        aria-hidden="true"
-      ></div>
-      <div className="relative bg-white dark:bg-gray-900 rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+      />
+      
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl max-w-md w-full mx-4 overflow-hidden relative z-10">
+        <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Your Custom Badge</h2>
+          <button 
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            <i className="ri-close-line text-xl"></i>
+          </button>
+        </div>
+        
         <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">Your Custom Badge</h3>
-            <button 
-              onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              aria-label="Close"
-            >
-              <i className="ri-close-line text-xl"></i>
-            </button>
-          </div>
-          
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             Thank you for visiting my profile! Here's your personalized badge as a token of appreciation.
           </p>
           
-          <div className="flex justify-center mb-6">
-            <div className="relative w-64 h-64 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg shadow-lg flex flex-col items-center justify-center p-4">
-              <div className="absolute -top-3 -right-3 bg-white dark:bg-gray-900 rounded-full p-2 shadow-lg">
-                <div className="text-primary-600 dark:text-primary-500">
-                  <i className="ri-verified-badge-fill text-xl"></i>
-                </div>
-              </div>
-              
-              <div className="h-24 w-24 rounded-full border-4 border-white overflow-hidden mb-3 bg-gray-200 flex items-center justify-center">
-                {currentUser?.photoURL ? (
-                  <img 
-                    src={currentUser.photoURL} 
-                    alt="User" 
-                    className="w-full h-full object-cover" 
-                  />
-                ) : (
-                  <div className="text-gray-400 text-3xl">
-                    <i className="ri-user-fill"></i>
-                  </div>
-                )}
-              </div>
-              
-              <h4 className="text-white font-bold text-lg">Sayar Basu</h4>
-              <p className="text-white/90 text-sm mb-2">AI/ML Engineer & GenAI Specialist</p>
-              
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg py-1 px-3">
-                <span className="text-white text-xs">
-                  {currentUser?.displayName || "Guest"}
-                </span>
-              </div>
-              
-              <div className="absolute bottom-3 text-xs text-white/70">
-                Badge #{badgeId}
+          <div className="flex flex-col items-center">
+            <div className="relative mb-6 w-full max-w-[400px] mx-auto">
+              {/* Display the actual badge from the server */}
+              <div className="rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src={`${buildApiUrl('generate-badge')}?name=${encodeURIComponent(currentUser?.displayName || 'Guest')}&email=${encodeURIComponent(currentUser?.email || '')}&photoURL=${encodeURIComponent(currentUser?.photoURL || '')}&t=${new Date().getTime()}`}
+                  alt="Your Badge"
+                  className="w-full h-auto"
+                />
               </div>
             </div>
           </div>
@@ -142,23 +228,22 @@ export default function BadgeModal({ isOpen, onClose }: BadgeModalProps) {
               )}
             </button>
             
-            <button 
-              onClick={handleShare}
-              disabled={isSharing}
-              className="w-full flex items-center justify-center px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-            >
-              {isSharing ? (
-                <>
-                  <div className="animate-spin h-4 w-4 border-2 border-gray-800 dark:border-gray-200 border-t-transparent rounded-full mr-2"></div>
-                  <span>Sharing...</span>
-                </>
-              ) : (
-                <>
-                  <i className="ri-share-line mr-2"></i>
-                  <span>Share Badge</span>
-                </>
-              )}
-            </button>
+            <div className="mt-6">
+              <h3 className="text-lg font-medium text-center text-gray-700 dark:text-gray-300 mb-4">Share on social media</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {sharePlatforms.map((platform) => (
+                  <button 
+                    key={platform.name}
+                    onClick={() => handleShare(platform.name)}
+                    disabled={isSharing}
+                    className={`flex items-center justify-center px-4 py-2.5 ${platform.color} ${platform.hoverColor} ${platform.textColor} rounded-lg transition-colors shadow-sm`}
+                  >
+                    <i className={`${platform.icon} text-lg mr-2`} />
+                    <span>{platform.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
